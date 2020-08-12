@@ -12,22 +12,30 @@ export default {
     return {
       viewer: {},
       taiwanPosition: {
-        latitude: 23.6978,
-        longitude: 120.9605
-      }
+        latitude: 25.02593,
+        longitude: 121.34340
+      },
+      templeUrl: '/canet/tp90-1/model/105001.kmz'
     }
   },
   mounted() {
     this.initCesium()
-    this.flyToTaiwan()
+    this.addDragon()
   },
   methods: {
     initCesium() {
       this.viewer = new Cesium.Viewer("cesiumContainer");
     },
+    addDragon() {
+      let myTileset = new Cesium.Cesium3DTileset({
+          url : '/my-dragon/tileset.json'
+      })
+      let tileset = this.viewer.scene.primitives.add(myTileset);
+      this.viewer.zoomTo(tileset);
+    },
     flyToTaiwan() {
       let { latitude, longitude } = this.taiwanPosition
-      let height = 1000000
+      let height = 1000
       this.viewer.camera.flyTo({ destination: new Cesium.Cartesian3.fromDegrees(longitude, latitude, height) })
     }
   }
