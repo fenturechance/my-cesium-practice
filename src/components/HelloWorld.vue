@@ -31,7 +31,10 @@ export default {
           url : '/my-dragon/tileset.json'
       })
       let tileset = this.viewer.scene.primitives.add(myTileset);
-      this.viewer.zoomTo(tileset);
+      let heading = 0
+      let pitch = 0
+      let range = 0
+      this.viewer.zoomTo(tileset, new Cesium.HeadingPitchRange(heading, pitch, range));
     },
     flyToTaiwan() {
       let { latitude, longitude } = this.taiwanPosition
