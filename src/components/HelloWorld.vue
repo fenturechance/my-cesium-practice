@@ -23,6 +23,7 @@ export default {
     this.initCesium()
     this.addDragon()
     this.addImageToDragonCenter()
+    this.addDebugModel()
   },
   methods: {
     initCesium() {
@@ -33,7 +34,7 @@ export default {
           url : '/my-dragon/tileset.json'
       })
       this.tileset = this.viewer.scene.primitives.add(myTileset);
-      let heading = 0
+      let heading = 1.2
       let pitch = 0
       let range = 0
       this.viewer.zoomTo(this.tileset, new Cesium.HeadingPitchRange(heading, pitch, range));
@@ -41,13 +42,23 @@ export default {
     addImageToDragonCenter() {
       this.tileset.readyPromise.then(() => {
         let center = this.tileset.boundingSphere.center //龍的中心點
+        let x = center.x
+        let y = center.y
+        let z = center.z
+        let newCenter = new Cesium.Cartesian3(x, y, z)
         let newBillboardCollection = new Cesium.BillboardCollection()
         let billboards = this.viewer.scene.primitives.add(newBillboardCollection)
         billboards.add({
-          position: center,
-          image: squirtleImage
+          position: newCenter,
+          image: squirtleImage,
+          width : 50,
+          height : 100,
         })
       })
+    },
+    addDebugModel() {
+      let myDebugMatrix = new Cesium.DebugModelMatrixPrimitive()
+      this.viewer.scene.primitives.add(myDebugMatrix)
     },
     flyToTaiwan() {
       let { latitude, longitude } = this.taiwanPosition
