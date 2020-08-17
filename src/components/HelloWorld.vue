@@ -119,16 +119,10 @@ export default {
       let myFunction = type == 'x' ? 'fromRotationX' : 'fromRotationY'
       const degree = Cesium.Matrix3[myFunction](Cesium.Math.toRadians(90));
       const rotation = Cesium.Matrix4.fromRotationTranslation(degree);
-      Cesium.Matrix4.multiply(
-          primitive.geometryInstances[0].modelMatrix,
-          rotation,
-          primitive.geometryInstances[0].modelMatrix
-      );
-      Cesium.Matrix4.multiply(
-          primitive.geometryInstances[1].modelMatrix,
-          rotation,
-          primitive.geometryInstances[1].modelMatrix
-      );
+      const myLine = primitive.geometryInstances[0].modelMatrix
+      const myArrow = primitive.geometryInstances[1].modelMatrix
+      Cesium.Matrix4.multiply( myLine, rotation, myLine ); //left, right, result //矩陣相加
+      Cesium.Matrix4.multiply( myArrow, rotation, myArrow );
       return primitive
     },
     flyToTaiwan() {
