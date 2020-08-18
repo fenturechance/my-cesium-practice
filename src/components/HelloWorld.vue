@@ -17,6 +17,7 @@ export default {
         latitude: 25.02593,
         longitude: 121.34340
       },
+      myBillboard: {}
     }
   },
   mounted() {
@@ -42,13 +43,14 @@ export default {
     addImageToDragonCenter() {
       this.tileset.readyPromise.then(() => {
         let center = this.tileset.boundingSphere.center //龍的中心點
-        let x = center.x
-        let y = center.y
-        let z = center.z
-        let newCenter = new Cesium.Cartesian3(x, y, z)
+        let cartographic  = Cesium.Ellipsoid.WGS84.cartesianToCartographic(center);
+        let longitude = Cesium.Math.toDegrees(cartographic.longitude)
+        let latitude = Cesium.Math.toDegrees(cartographic.latitude)
+        let height = cartographic.height + 500
+        let newCenter = Cesium.Cartesian3.fromDegrees(longitude, latitude, height)
         let newBillboardCollection = new Cesium.BillboardCollection()
-        let billboards = this.viewer.scene.primitives.add(newBillboardCollection)
-        billboards.add({
+        this.myBillboard = this.viewer.scene.primitives.add(newBillboardCollection)
+        this.myBillboard.add({
           position: newCenter,
           image: squirtleImage,
           width : 50,
